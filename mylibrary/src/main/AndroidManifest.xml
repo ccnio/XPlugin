@@ -3,7 +3,12 @@
     package="com.ccnio.mylibrary">
 
     <application>
-        <activity android:name=".LibActivity"></activity>
+        <activity android:name=".LibActivity">
+            <intent-filter>
+                <action android:name="com.ccnio.LibActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
