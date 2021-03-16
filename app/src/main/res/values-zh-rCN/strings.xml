@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">XPlugin</string>
+    <string name="app_name2">@string/app_name</string>
+    <string name="str1">lib str</string>
+</resources>

@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">XPlugin</string>
+    <string name="app_name2">@string/app_name</string>
+    <string name="str1">app str</string>
+    <string name="str2">app str</string>
+    <string name="color_str">app str1</string>
+</resources>

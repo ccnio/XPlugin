@@ -1,0 +1,64 @@
+def packageName = 'com.xiaomi.wearable'
+def libVersion = '0.0.3'
+def proName = "resource-conflict"
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: uri('/home/lijf/LocalRepo'))
+            pom.groupId = packageName
+            pom.artifactId = proName
+            pom.version = libVersion
+        }
+    }
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId packageName
+            artifactId = proName
+            version libVersion
+            from components.findByName("java")
+
+//            artifact(sourcesJar)
+            artifact("$buildDir/libs/${project.name}.jar")
+        }
+    }
+}
+
+artifactoryPublish.skip = true
+
+artifactoryPublish {
+    dependsOn("jar") //依赖的任务
+    publications(publishing.publications.getByName("maven"))
+}
+
+Properties author = new Properties()
+author.load(new FileInputStream("/home/lijf/LocalRepo/author.properties"))
+
+artifactory {
+    clientConfig.setIncludeEnvVars(true)
+    clientConfig.info.addEnvironmentProperty('test.adding.dynVar', new Date().toString())
+    contextUrl = 'https://pkgs.d.xiaomi.net/artifactory'
+    publish {
+        repository {
+            repoKey = 'snapshots'
+            username = author.getProperty("username")
+            password = author.getProperty("password")
+
+            ivy {
+                ivyLayout = '[organization]/[module]/ivy-[revision].xml'
+                artifactLayout = '[organization]/[module]/[revision]/[module]-[revision](-[classifier]).[ext]'
+                mavenCompatible = true
+            }
+        }
+        defaults {
+            publishArtifacts = true
+            publishPom = true
+            properties = ['qa.level': 'basic', 'dev.team': 'core']
+        }
+    }
+}
+
+//./gradlew   clean   ResourceConflict:artifactoryPublish --info

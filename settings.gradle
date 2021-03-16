@@ -1,0 +1,4 @@
+include ':mylibrary'
+include ':app'
+//include ':buildSrc'
+rootProject.name = "XPlugin"
