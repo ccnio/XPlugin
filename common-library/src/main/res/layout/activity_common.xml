@@ -9,16 +9,14 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/lib_str2"
-        android:textColor="@color/lib_green" />
+        android:text="@string/common_str1"
+        android:textColor="@color/common_red" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/common"
         android:text="@string/common_str2"
-        android:textColor="@color/common_red" />
-
-    <include layout="@layout/activity_common" />
+        android:textColor="@color/common_yellow" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

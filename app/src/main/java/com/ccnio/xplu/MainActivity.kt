@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.ccnio.mylibrary.LibActivity
-import com.demon.js_pdf.WebViewHelper
 import com.google.gson.Gson
 
 //import com.ccnio.mylibrary.LibActivity
@@ -21,6 +20,5 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent("com.ccnio.LibActivity")
             startActivity(intent)
         }
-        WebViewHelper()
     }
 }

@@ -1,4 +1,7 @@
 include ':mylibrary'
+include ':library2'
+include ':library3'
+include ':common-library'
 include ':app'
 //include ':buildSrc'
 rootProject.name = "XPlugin"

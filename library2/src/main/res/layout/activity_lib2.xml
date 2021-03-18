@@ -15,10 +15,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/common"
-        android:text="@string/common_str2"
-        android:textColor="@color/common_red" />
-
-    <include layout="@layout/activity_common" />
+        android:background="@drawable/test"
+        android:text="@string/lib_str1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

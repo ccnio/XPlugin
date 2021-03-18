@@ -43,6 +43,7 @@ class ResourcePlugin : Plugin<Project> {
                 val outputFile =
                     "${project.rootProject.buildDir.absolutePath}${File.separator}$OUTPUT_FILE"
                 val task = project.tasks.create(taskName, ResourceCheck::class.java) {
+                    Logger.i("task action")
                     it.resourceFiles = variant.allRawAndroidResources
                     it.outputFile = File(outputFile)
                     it.ignoreFile =

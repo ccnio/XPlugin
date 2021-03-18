@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    tools:ignore="MissingConstraints">
 
     <TextView
         android:layout_width="wrap_content"
@@ -20,7 +21,14 @@
         android:id="@+id/btView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="启动lib界面"
-        tools:ignore="MissingConstraints" />
+        android:text="启动lib界面" />
+
+    <ImageView
+        android:layout_width="5dp"
+        android:layout_height="5dp"
+        android:src="@drawable/test_lib"
+        app:layout_constraintTop_toBottomOf="@id/btView" />
+
+<!--    <include layout="@layout/activity_lib" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

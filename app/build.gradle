@@ -1,7 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-//    id 'resource-conflict'
+    id 'resource-conflict'
     id 'xplu-brick'
 }
 
@@ -36,10 +36,10 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-//    resourceConfig {
-//        enable = true
-//        interruptWhenConflict = false
-//    }
+    resourceConfig {
+        enable = true
+        interruptWhenConflict = false
+    }
 }
 
 dependencies {
@@ -49,9 +49,12 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.3.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    brick "com.google.code.gson:gson:2.8.6"
-//    implementation project(':mylibrary')
-    brick project(':mylibrary')
-    brick files('libs/pdf.aar')
+    implementation project(':mylibrary')
+    implementation project(':library2')
+    implementation project(':library3')
+    implementation "com.google.code.gson:gson:2.8.6"
+//    brick "com.google.code.gson:gson:2.8.6"
+//    brick project(':mylibrary')
+//    brick files('libs/pdf.aar')
 
 }

@@ -41,7 +41,7 @@ open class ResourceCheck : DefaultTask() {
     fun doAction() {
         conflict = false
         readIgnoreList(ignoreFile)
-        resourceFiles?.files?.filter { it.exists() /*&& !it.absolutePath.contains("transforms")*/ }
+        resourceFiles?.files?.filter { it.exists() && !it.absolutePath.contains("transforms") }
             ?.forEach { fileOrDir ->
                 fileOrDir.walk().filter { it.exists() && it.isFile }.forEach {
                     if (isValuesRes(it)) readValues(it)
@@ -93,6 +93,7 @@ open class ResourceCheck : DefaultTask() {
     }
 
     private fun readFile(file: File) {
+        Logger.i("readFile: $file")
         val name = file.name
         val value = getFileMD5(file) ?: return
         val res = ResourceInfo(name, value, file.path, true)//name value path
@@ -134,11 +135,12 @@ open class ResourceCheck : DefaultTask() {
                         keyDivider = true
                     }
                     val ignoreValues = ignores[type]
-                    val out = if (ignoreValues != null && ignoreValues.contains(it.name)) "ignored::$it"
-                    else {
-                        if (!conflict) conflict = true
-                        it.toString()
-                    }
+                    val out =
+                        if (ignoreValues != null && ignoreValues.contains(it.name)) "ignored::$it"
+                        else {
+                            if (!conflict) conflict = true
+                            it.toString()
+                        }
                     printWriter.write("$out\n")
                 }
                 printWriter.write("\n")

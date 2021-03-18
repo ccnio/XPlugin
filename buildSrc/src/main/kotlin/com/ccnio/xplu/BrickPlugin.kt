@@ -15,7 +15,7 @@ private const val DEPENDENCY_NAME = "brick"
 class BrickPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
-        Logger.make(project, TAG)
+//        Logger.make(project, TAG)
         project.configurations.create(DEPENDENCY_NAME)
         val assembleTask = getTaskInfo(project.gradle.startParameter.taskNames)
 
