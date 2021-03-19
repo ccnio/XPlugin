@@ -12,7 +12,7 @@ object Logger {
     private lateinit var project: Project
     private lateinit var TAG: String
     private const val enableLogLevel = true
-    private const val enableLogConsole = true
+    private const val enableLogConsole = false
     private val format by lazy { SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS") }
 
     fun make(project: Project, tag: String) {
@@ -24,10 +24,24 @@ object Logger {
         i(TAG, msg)
     }
 
+    fun w(msg: String) {
+        w(TAG, msg)
+    }
+
     fun i(tag: String, msg: String) {
         val message = format.format(System.currentTimeMillis()) + " $tag: $msg"
         if (enableLogLevel) {
             project.logger.log(LogLevel.INFO, message)
+        }
+        if (enableLogConsole) {
+            println(message)
+        }
+    }
+
+    fun w(tag: String, msg: String) {
+        val message = format.format(System.currentTimeMillis()) + " $tag: $msg"
+        if (enableLogLevel) {
+            project.logger.log(LogLevel.WARN, message)
         }
         if (enableLogConsole) {
             println(message)

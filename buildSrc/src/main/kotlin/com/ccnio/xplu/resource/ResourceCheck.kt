@@ -93,7 +93,7 @@ open class ResourceCheck : DefaultTask() {
     }
 
     private fun readFile(file: File) {
-        Logger.i("readFile: $file")
+//        Logger.i("readFile: $file")
         val name = file.name
         val value = getFileMD5(file) ?: return
         val res = ResourceInfo(name, value, file.path, true)//name value path
@@ -167,6 +167,6 @@ open class ResourceCheck : DefaultTask() {
                 ignores[key] = set
             }
         }
-        Logger.i("ignores: $ignores")
+//        Logger.i("ignores: $ignores")
     }
 }

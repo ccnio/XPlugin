@@ -1,7 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-    id 'resource-conflict'
+    id 'xplu-resource'
     id 'xplu-brick'
 }
 
@@ -37,8 +37,10 @@ android {
         jvmTarget = '1.8'
     }
     resourceConfig {
-        enable = true
+        checkConflict = true
         interruptWhenConflict = false
+        srcModule = 'common-library'
+        destModule = 'mylibrary'
     }
 }
 
