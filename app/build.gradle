@@ -37,10 +37,10 @@ android {
         jvmTarget = '1.8'
     }
     resourceConfig {
-        checkConflict = true
+        scanConflict = true
         interruptWhenConflict = false
-        srcModule = 'common-library'
-        destModule = 'mylibrary'
+        refactorSrcModule = 'common-library'
+        refactorDestModule = 'mylibrary'
     }
 }
 

@@ -51,9 +51,9 @@ class ResourcePlugin : Plugin<Project> {
         project: Project,
         config: ResourceConfig
     ) {
-        if (!config.checkConflict) return
+        if (!config.scanConflict) return
         var startMills = 0L
-        val taskName = "checkResource${variant.name.capitalize()}"
+        val taskName = "scanConflictRes${variant.name.capitalize()}"
         val outputFile =
             "${project.rootProject.buildDir.absolutePath}${File.separator}$OUTPUT_FILE"
         val task = project.tasks.create(taskName, ResourceCheck::class.java) {
@@ -87,13 +87,13 @@ class ResourcePlugin : Plugin<Project> {
         project: Project,
         variant: InternalBaseVariant
     ) {
-        val resSrc = config.srcModule
-        val resDest = config.destModule
+        val resSrc = config.refactorSrcModule
+        val resDest = config.refactorDestModule
         if (resSrc.isEmpty() || resDest.isEmpty()) return
 
 
         val create =
-            project.tasks.create("checkRefactorRes${variant.name.capitalize()}", Exec::class.java) {
+            project.tasks.create("refactorRes${variant.name.capitalize()}", Exec::class.java) {
 //                it.commandLine = listOf("python", "Demo.py")
                 it.workingDir = File(project.rootDir.absolutePath)
             }.doFirst { task ->

@@ -44,6 +44,7 @@ open class ResourceCheck : DefaultTask() {
         resourceFiles?.files?.filter { it.exists() && !it.absolutePath.contains("transforms") }
             ?.forEach { fileOrDir ->
                 fileOrDir.walk().filter { it.exists() && it.isFile }.forEach {
+                    Logger.w("path $it")
                     if (isValuesRes(it)) readValues(it)
                     else readFile(it)
                 }
