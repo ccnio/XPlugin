@@ -21,7 +21,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 const val TAG = "X-Plu"
 private const val TASK_GROUP = "resource"
 private const val FILE_IGNORE = "res_conflict_ignore.txt"
-private const val OUTPUT_FILE = "resource_conflict.log"
+private const val OUTPUT_FILE = "res_conflict.log"
 
 class ResourcePlugin : Plugin<Project> {
 
@@ -89,10 +89,8 @@ class ResourcePlugin : Plugin<Project> {
     ) {
         val resSrc = config.srcModule
         val resDest = config.destModule
-        if (resSrc.isEmpty() || resDest.isEmpty()) {
-            Logger.w("srcModule or destModule should not be empty")
-            return
-        }
+        if (resSrc.isEmpty() || resDest.isEmpty()) return
+
 
         val create =
             project.tasks.create("checkRefactorRes${variant.name.capitalize()}", Exec::class.java) {
@@ -119,13 +117,21 @@ class ResourcePlugin : Plugin<Project> {
                     return@doFirst
                 }
                 val args =
-                    arrayListOf("python", "ResRefactor.py", resSrc, resDest, rFile!!.absolutePath)
+                    arrayListOf(
+                        "python",
+                        "ResRefactor.py",
+                        rFile!!.absolutePath.replace("\\", "/"),
+                    )
+                project.rootProject.allprojects.filter { resSrc == it.name || resDest == it.name }
+                    .forEach { args.add(getResPath(it.projectDir)) }
+
                 for (pro in project.rootProject.allprojects) {
-                    if (resSrc == pro.name) continue
+                    if (resSrc == pro.name || resDest == pro.name) continue
+
                     for (conf in pro.configurations) {
                         val find = conf.allDependencies.find { it.name.equals(resSrc) }
                         if (find != null) {
-                            args.add(pro.name)
+                            args.add(getResPath(pro.projectDir))
                             break
                         }
                     }
@@ -133,6 +139,11 @@ class ResourcePlugin : Plugin<Project> {
                 task.commandLine = args
             }
         create.group = TASK_GROUP
+    }
+
+    private fun getResPath(file: File): String {
+        Logger.i("file = $file")
+        return (file.absolutePath + "/src/main").replace("\\", "/")
     }
 
 }
