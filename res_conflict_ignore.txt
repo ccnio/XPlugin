@@ -1,1 +1,2 @@
-string@test
+color#color@blue_text_selector.xml
+string#values-zh-rCN@str1

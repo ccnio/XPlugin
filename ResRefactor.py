@@ -263,7 +263,7 @@ def main(src_dir, des_dir, des_r_file, exist_dirs):
     build_dir = os.path.abspath('.') + "/build/"
     if not os.path.exists(build_dir):
         os.makedirs(build_dir)
-    output_path = build_dir + "res_need_refactor.log"
+    output_path = build_dir + "res_migrate.txt"
     file = open(output_path, 'w')
 
     for res_type in resource_map.keys():

@@ -44,7 +44,6 @@ open class ResourceCheck : DefaultTask() {
         resourceFiles?.files?.filter { it.exists() && !it.absolutePath.contains("transforms") }
             ?.forEach { fileOrDir ->
                 fileOrDir.walk().filter { it.exists() && it.isFile }.forEach {
-                    Logger.w("path $it")
                     if (isValuesRes(it)) readValues(it)
                     else readFile(it)
                 }
@@ -55,7 +54,7 @@ open class ResourceCheck : DefaultTask() {
 
 
     private fun isValuesRes(file: File) = file.parentFile.name.contains(DIR_RES_VALUES)
-    private val resourceTypeMap = HashMap<String, HashMap<String, HashSet<ResourceInfo>>>()
+    private val resourceTypeMap = HashMap<String, HashMap<String, ResList>>()
 
     /**
      * type: string/color
@@ -81,21 +80,15 @@ open class ResourceCheck : DefaultTask() {
                     resourceTypeMap[type] = resourceMap
                 }
 
-
                 val res = ResourceInfo(name, value, file.path)
-                var values = resourceMap[res.id]
-                if (values == null) {
-                    values = HashSet()
-                    resourceMap[res.id] = values
-                }
-                values.add(res)
+                addRes(resourceMap, res)
             }
         }
     }
 
     private fun readFile(file: File) {
-//        Logger.i("readFile: $file")
         val name = file.name
+//        Logger.w("readFile: ${file.name}")
         val value = getFileMD5(file) ?: return
         val res = ResourceInfo(name, value, file.path, true)//name value path
 
@@ -105,12 +98,24 @@ open class ResourceCheck : DefaultTask() {
             resourceTypeMap[res.dir] = resourceMap
         }
 
+        addRes(resourceMap, res)
+    }
+
+    private fun addRes(
+        resourceMap: HashMap<String, ResList>,
+        res: ResourceInfo
+    ) {
         var values = resourceMap[res.id]
         if (values == null) {
-            values = HashSet()
+            values = ResList()//HashSet()
             resourceMap[res.id] = values //"$dir@$name"
         }
-        values.add(res)
+        val resSet = values.resSet
+        if (!values.conflict && !values.containsRes(res.value) && resSet.isNotEmpty()) {
+            values.conflict = true
+        }
+
+        resSet.add(res)
     }
 
     private fun printConflict(file: File?) {
@@ -122,22 +127,22 @@ open class ResourceCheck : DefaultTask() {
         val printWriter = file.printWriter()
         printWriter.write("update at ${Date().toLocaleString()}\n\n")
         resourceTypeMap.forEach { (type, map) ->
-            var typeDivider = false
-            map.filter { it.value.size > 1 }.forEach { (key, valuesSet) ->
+            var typeDivider = false  //resourceTypeMap = HashMap<String, HashMap<String, ResList>>()
+            map.filter { it.value.conflict }.forEach { (key, valuesSet) ->
                 if (!typeDivider) {
                     printWriter.write("**************** $type ****************\n")
                     typeDivider = true
                 }
 
                 var keyDivider = false
-                valuesSet.forEach {
+                valuesSet.resSet.forEach {
                     if (!keyDivider) {
                         printWriter.write("<<<<<<<< $key >>>>>>>\n")
                         keyDivider = true
                     }
                     val ignoreValues = ignores[type]
                     val out =
-                        if (ignoreValues != null && ignoreValues.contains(it.name)) "ignored::$it"
+                        if (ignoreValues != null && ignoreValues.contains(it.id)) "ignored::$it"
                         else {
                             if (!conflict) conflict = true
                             it.toString()
@@ -158,7 +163,7 @@ open class ResourceCheck : DefaultTask() {
 
         ignores.clear()
         file.readLines().forEach {
-            val split = it.split("@")
+            val split = it.split("#")
             if (split.size == 2) {
                 val key = split[0]
                 var set = ignores[key]
@@ -168,6 +173,5 @@ open class ResourceCheck : DefaultTask() {
                 ignores[key] = set
             }
         }
-//        Logger.i("ignores: $ignores")
     }
 }

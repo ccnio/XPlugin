@@ -78,7 +78,7 @@ class ResourcePlugin : Plugin<Project> {
 
         task.group = TASK_GROUP
         val taskCompile =
-            project.tasks.findByName("dexBuilder${variant.name.capitalize()}")
+            project.tasks.findByName("process${variant.name.capitalize()}JavaRes")
         taskCompile?.dependsOn(task)
     }
 
@@ -87,13 +87,13 @@ class ResourcePlugin : Plugin<Project> {
         project: Project,
         variant: InternalBaseVariant
     ) {
-        val resSrc = config.refactorSrcModule
-        val resDest = config.refactorDestModule
+        val resSrc = config.migrateSrc
+        val resDest = config.migrateDest
         if (resSrc.isEmpty() || resDest.isEmpty()) return
 
 
         val create =
-            project.tasks.create("refactorRes${variant.name.capitalize()}", Exec::class.java) {
+            project.tasks.create("migrateRes${variant.name.capitalize()}", Exec::class.java) {
 //                it.commandLine = listOf("python", "Demo.py")
                 it.workingDir = File(project.rootDir.absolutePath)
             }.doFirst { task ->

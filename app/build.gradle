@@ -39,8 +39,8 @@ android {
     resourceConfig {
         scanConflict = true
         interruptWhenConflict = false
-        refactorSrcModule = 'common-library'
-        refactorDestModule = 'mylibrary'
+        migrateSrc = 'common-library'
+        migrateDest = 'mylibrary'
     }
 }
 
@@ -55,8 +55,8 @@ dependencies {
     implementation project(':library2')
     implementation project(':library3')
     implementation "com.google.code.gson:gson:2.8.6"
-//    brick "com.google.code.gson:gson:2.8.6"
-//    brick project(':mylibrary')
-//    brick files('libs/pdf.aar')
+    brick "com.google.code.gson:gson:2.8.6"
+    brick project(':mylibrary')
+    brick files('libs/pdf.aar')
 
 }
