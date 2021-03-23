@@ -27,6 +27,7 @@ android {
     flavorDimensions "one"
     productFlavors {
         dev {}
+
         play {}
     }
     compileOptions {

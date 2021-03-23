@@ -105,16 +105,12 @@ open class ResourceCheck : DefaultTask() {
         resourceMap: HashMap<String, ResList>,
         res: ResourceInfo
     ) {
-        var values = resourceMap[res.id]
+        var values = resourceMap[res.id] //HashMap<String, HashMap<String, ResList>>()
         if (values == null) {
             values = ResList()//HashSet()
             resourceMap[res.id] = values //"$dir@$name"
         }
         val resSet = values.resSet
-        if (!values.conflict && !values.containsRes(res.value) && resSet.isNotEmpty()) {
-            values.conflict = true
-        }
-
         resSet.add(res)
     }
 
@@ -128,7 +124,7 @@ open class ResourceCheck : DefaultTask() {
         printWriter.write("update at ${Date().toLocaleString()}\n\n")
         resourceTypeMap.forEach { (type, map) ->
             var typeDivider = false  //resourceTypeMap = HashMap<String, HashMap<String, ResList>>()
-            map.filter { it.value.conflict }.forEach { (key, valuesSet) ->
+            map.filter { it.value.isConflict() }.forEach { (key, valuesSet) ->
                 if (!typeDivider) {
                     printWriter.write("**************** $type ****************\n")
                     typeDivider = true
