@@ -205,7 +205,11 @@ def refactor_value(res_name, res_type, src_dir, des_dir, xml_name):
             _dst_dir = des_dir + _dir
             if not os.path.exists(_dst_dir):
                 os.mkdir(_dst_dir)
-            des_xml = os.path.join(_dst_dir, xml_name + 's.xml')
+
+            xml_ = xml_name + 's.xml'
+            if os.path.basename(file) == 'no_translate.xml':
+                xml_ = 'no_translate.xml'
+            des_xml = os.path.join(_dst_dir, xml_)
             src_tree = read_xml_tree(file)
             des_tree = read_xml_tree(des_xml)
 
@@ -298,7 +302,7 @@ def main(src_dir, des_dir, des_r_file, exist_dirs):
     print("\nsee detail in %s" % output_path)
 
 
-is_debug = True
+is_debug = False
 if __name__ == '__main__':
     print(sys.argv)
     main(src_dir='C:/code/XPlugin/common-library/src/main' if is_debug else sys.argv[2],
