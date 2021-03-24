@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicBoolean
  */
 const val TAG = "X-Plu"
 private const val TASK_GROUP = "resource"
-private const val FILE_IGNORE = "res_conflict_ignore.txt"
+private const val FILE_IGNORE = "res_ignore.txt"
 private const val OUTPUT_FILE = "res_conflict.log"
 
 class ResourcePlugin : Plugin<Project> {
