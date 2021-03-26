@@ -45,6 +45,8 @@ def traverse_used(res_type, filepath, res_name):
 
 
 def exist_in_xml(res_type, filepath, res_name):
+    if not os.path.exists(filepath):
+        return False, ""
     path_dir = os.listdir(filepath)
     for dirs in path_dir:
         child = os.path.join('%s/%s' % (filepath, dirs))
@@ -202,42 +204,45 @@ def refactor_value(res_name, res_type, src_dir, des_dir, xml_name):
             file = os.path.join('%s/%s' % (child, f))
             if not os.path.isfile(file) or os.path.basename(file).split('.')[1] != 'xml':
                 continue
+
+            src_tree = read_xml_tree(file)
+            find = src_tree.find(".//%s[@name=\"%s\"]" % (res_type, res_name))
+            if find is None:
+                continue
+
             _dst_dir = des_dir + _dir
             if not os.path.exists(_dst_dir):
                 os.mkdir(_dst_dir)
 
-            xml_ = xml_name + 's.xml'
+            dst_name = xml_name + 's.xml'
             if os.path.basename(file) == 'no_translate.xml':
-                xml_ = 'no_translate.xml'
-            des_xml = os.path.join(_dst_dir, xml_)
-            src_tree = read_xml_tree(file)
+                dst_name = 'no_translate.xml'
+            des_xml = os.path.join(_dst_dir, dst_name)
             des_tree = read_xml_tree(des_xml)
-
-            find = src_tree.find(".//%s[@name=\"%s\"]" % (res_type, res_name))
-            if find is None:
-                continue
             exist = des_tree.find(".//%s[@name=\"%s\"]" % (res_type, res_name))
             if not (exist is None):
                 continue
 
             des_tree.getroot().append(find)
             src_tree.getroot().remove(find)
-            src_tree.write(file, encoding='utf-8')
-            des_tree.write(des_xml, encoding='utf-8')
+            src_tree.write(file, xml_declaration=True, encoding='utf-8')
+            des_tree.write(des_xml, xml_declaration=True, encoding='utf-8')
 
 
 def refactor(result_path, src_dir, des_dir):
+    eTree.register_namespace("tools", "http://schemas.android.com/tools")
+    eTree.register_namespace("xliff", "urn:oasis:names:tc:xliff:document:1.2")
     file = open(result_path, 'r')
     lines = file.readlines()
     for line in lines:
         info = line.split('::')
         res_type = info[0]
         res_name = info[1]
-        # if res_type == 'layout' or res_type == 'anim' or res_type == 'animator' or res_type == 'drawable' \
-        #         or res_type == 'xml' or res_type == 'interpolator' or res_type == 'font' \
-        #         or res_type == 'mipmap' or res_type == 'color@file':
-        #      refactor_file(res_name, res_type, src_dir + '/res', des_dir + '/res/')
-        if res_type == 'bool' or res_type == 'dimen' or res_type == 'integer' \
+        if res_type == 'layout' or res_type == 'anim' or res_type == 'animator' or res_type == 'drawable' \
+                or res_type == 'xml' or res_type == 'interpolator' or res_type == 'font' \
+                or res_type == 'mipmap' or res_type == 'color@file':
+            refactor_file(res_name, res_type, src_dir + '/res', des_dir + '/res/')
+        elif res_type == 'bool' or res_type == 'dimen' or res_type == 'integer' \
                 or res_type == 'plurals' or res_type == 'string' \
                 or res_type == 'style' or res_type == 'declare-styleable' or res_type == 'color@value':
             xml_name = res_type
@@ -304,10 +309,10 @@ def main(src_dir, des_dir, des_r_file, exist_dirs):
 
 is_debug = False
 if __name__ == '__main__':
-    print(sys.argv)
-    main(src_dir='C:/code/XPlugin/common-library/src/main' if is_debug else sys.argv[2],
-         des_dir='C:/code/XPlugin/mylibrary/src/main' if is_debug else sys.argv[3],
-         des_r_file='C:/code/XPlugin/app/build/intermediates/runtime_symbol_list/devDebug/R.txt' if is_debug else
+    main(src_dir='/home/lijf/back/android-wearable-app/app/src/main' if is_debug else sys.argv[2],
+         des_dir='/home/lijf/back/android-wearable-app/module-profile/src/main' if is_debug else sys.argv[3],
+         des_r_file='/home/lijf/back/android-wearable-app/module-profile/build/intermediates/compile_symbol_list/debug/R.txt' if is_debug else
          sys.argv[1],
-         exist_dirs=['C:/code/XPlugin/library2/src/main',
-                     'C:/code/XPlugin/library3/src/main'] if is_debug else sys.argv[4:len(sys.argv)])
+         exist_dirs=['/home/lijf/back/android-wearable-app/module-main/src/main',
+                     '/home/lijf/back/android-wearable-app/app/src/main'] if is_debug else sys.argv[
+                                                                                           4:len(sys.argv)])

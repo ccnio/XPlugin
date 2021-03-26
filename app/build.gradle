@@ -41,7 +41,6 @@ android {
         scanConflict = true
         interruptWhenConflict = false
         migrateSrc = 'common-library'
-        migrateDest = 'mylibrary'
     }
 }
 

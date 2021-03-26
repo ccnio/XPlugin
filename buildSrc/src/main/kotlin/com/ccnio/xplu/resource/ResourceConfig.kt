@@ -7,5 +7,4 @@ open class ResourceConfig {
     var scanConflict: Boolean = false
     var interruptWhenConflict = false
     var migrateSrc: String = ""
-    var migrateDest: String = ""
 }

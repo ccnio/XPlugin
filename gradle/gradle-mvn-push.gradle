@@ -1,6 +1,6 @@
 def packageName = 'com.xiaomi.wearable'
-def libVersion = '0.0.3'
-def proName = "resource-conflict"
+def libVersion = '0.0.7'
+def proName = "xplu"
 
 uploadArchives {
     repositories {
@@ -61,4 +61,4 @@ artifactory {
     }
 }
 
-//./gradlew   clean   ResourceConflict:artifactoryPublish --info
+//./gradlew   clean   x-plu:artifactoryPublish --info

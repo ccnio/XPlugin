@@ -88,7 +88,7 @@ class ResourcePlugin : Plugin<Project> {
         variant: InternalBaseVariant
     ) {
         val resSrc = config.migrateSrc
-        val resDest = config.migrateDest
+        val resDest = project.name//config.migrateDest
         if (resSrc.isEmpty() || resDest.isEmpty()) return
 
 
@@ -126,7 +126,7 @@ class ResourcePlugin : Plugin<Project> {
                     .forEach { args.add(getResPath(it.projectDir)) }
 
                 for (pro in project.rootProject.allprojects) {
-                    if (resSrc == pro.name || resDest == pro.name) continue
+                    if (resDest == pro.name) continue
 
                     for (conf in pro.configurations) {
                         val find = conf.allDependencies.find { it.name.equals(resSrc) }
@@ -142,7 +142,6 @@ class ResourcePlugin : Plugin<Project> {
     }
 
     private fun getResPath(file: File): String {
-        Logger.i("file = $file")
         return (file.absolutePath + "/src/main").replace("\\", "/")
     }
 
