@@ -99,44 +99,46 @@ class ResourcePlugin : Plugin<Project> {
             }.doFirst { task ->
                 task as Exec
                 val once = AtomicBoolean()
-                var rFile: File? = null
                 variant.outputs.all { output ->
                     if (once.compareAndSet(false, true)) {
                         val processResources = output.processResourcesProvider.get()
-                        rFile = project.files(
+                        val rFile: File? = project.files(
                             when (processResources) {
                                 is GenerateLibraryRFileTask -> processResources.getTextSymbolOutputFile()
                                 is LinkApplicationAndroidResourcesTask -> processResources.getTextSymbolOutputFile()
                                 else -> throw RuntimeException("error")
                             }
                         ).builtBy(processResources).singleFile
-                    }
-                }
-                if (rFile == null || !rFile!!.exists()) {
-                    Logger.e("R file not found")
-                    return@doFirst
-                }
-                val args =
-                    arrayListOf(
-                        "python",
-                        "ResRefactor.py",
-                        rFile!!.absolutePath.replace("\\", "/"),
-                    )
-                project.rootProject.allprojects.filter { resSrc == it.name || resDest == it.name }
-                    .forEach { args.add(getResPath(it.projectDir)) }
-
-                for (pro in project.rootProject.allprojects) {
-                    if (resDest == pro.name) continue
-
-                    for (conf in pro.configurations) {
-                        val find = conf.allDependencies.find { it.name.equals(resSrc) }
-                        if (find != null) {
-                            args.add(getResPath(pro.projectDir))
-                            break
+                        Logger.e("R file: ${rFile?.absolutePath} exists = ${rFile?.exists()}")
+                        if (rFile == null || !rFile.exists()) {
+                            Logger.e("R file not found")
+                            return@all
                         }
+                        val args =
+                            arrayListOf(
+                                "python",
+                                "ResRefactor.py",
+                                rFile.absolutePath.replace("\\", "/"),
+                            )
+                        project.rootProject.allprojects.filter { resSrc == it.name || resDest == it.name }
+                            .forEach { args.add(getResPath(it.projectDir)) }
+
+                        for (pro in project.rootProject.allprojects) {
+                            if (resDest == pro.name) continue
+
+                            //todo 间接依赖的module,虽然java文件不会被访问,但资源会被访问.下面获取依赖不会获取到间接依赖的module
+                            // 因此存在问题
+                            for (conf in pro.configurations) {
+                                val find = conf.allDependencies.find { it.name.equals(resSrc) }
+                                if (find != null) {
+                                    args.add(getResPath(pro.projectDir))
+                                    break
+                                }
+                            }
+                        }
+                        task.commandLine = args
                     }
                 }
-                task.commandLine = args
             }
         create.group = TASK_GROUP
     }
