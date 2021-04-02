@@ -1,14 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
     <string-array name="screen_wake_states">
         <item>All day</item>
         <item>Scheduled</item>
         <item>Turn off</item>
     </string-array>
-    <integer-array name="int_arr">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-    </integer-array>
-</resources><!--diff-->
-    <!--diff-->
+    </resources>

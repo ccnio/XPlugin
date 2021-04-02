@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ccnio.common">
+    package="com.ccnio.dest">
 
     <application>
-        <activity android:name=".CommonActivity">
+        <activity android:name=".LibActivity">
             <intent-filter>
                 <action android:name="com.ccnio.LibActivity" />
                 <category android:name="android.intent.category.DEFAULT" />

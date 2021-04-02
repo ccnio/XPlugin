@@ -1,4 +1,5 @@
 <resources>
     <string name="common_str1">common str1</string>
     <string name="common_str2">common str2</string>
+    <string name="common_indirect">common indirect</string>
 </resources>
