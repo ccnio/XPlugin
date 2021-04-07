@@ -128,6 +128,7 @@ class ResourcePlugin : Plugin<Project> {
 
                             //todo 间接依赖的module,虽然java文件不会被访问,但资源会被访问.下面获取依赖不会获取到间接依赖的module
                             // 因此存在问题
+                            //brick 的依赖也能找到
                             for (conf in pro.configurations) {
                                 val find = conf.allDependencies.find { it.name.equals(resSrc) }
                                 if (find != null) {

@@ -15,5 +15,6 @@ class LibActivity : AppCompatActivity() {
         R.string.common_indirect
         val string = resources.getString(R.string.common_indirect)
         Log.d(TAG, "onCreate: $string")
+        resources.getStringArray(R.array.week)
     }
 }

@@ -55,7 +55,8 @@ dependencies {
     implementation project(':indirect-library')
     implementation "com.google.code.gson:gson:2.8.6"
     brick "com.google.code.gson:gson:2.8.6"
-//    brick project(':dest-library')
+    brick project(':dest-library')
+    brick project(':common-library')
     brick files('libs/pdf.aar')
 
 }

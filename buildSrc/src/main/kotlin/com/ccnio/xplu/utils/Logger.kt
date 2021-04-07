@@ -11,8 +11,8 @@ import java.text.SimpleDateFormat
 object Logger {
     private lateinit var project: Project
     private lateinit var TAG: String
-    private const val enableLogLevel = true
-    private const val enableLogConsole = false
+    private const val enableLogLevel = false
+    private const val enableLogConsole = true
     private val format by lazy { SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS") }
 
     fun make(project: Project, tag: String) {

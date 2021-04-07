@@ -304,7 +304,7 @@ def main(src_dir, des_dir, des_r_file, exist_dirs):
     file.close()
 
     refactor(output_path, src_dir, des_dir)
-    print("\nsee detail in %s" % output_path)
+    print("\nres list in %s" % output_path)
 
 
 is_debug = False

@@ -31,5 +31,7 @@ class MainActivity : AppCompatActivity() {
         R.string.indirect
         Indirect()
 
+        R.string.common_indirect
+
     }
 }
