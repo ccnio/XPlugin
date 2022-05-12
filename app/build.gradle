@@ -53,8 +53,8 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
 //    implementation project(':dest-library')
     implementation project(':indirect-library')
-    implementation "com.google.code.gson:gson:2.8.6"
-    brick "com.google.code.gson:gson:2.8.6"
+    implementation "com.google.code.gson:gson:2.8.6"//注释掉此行的话，开发过程中此module就无法引用gson
+    brick "com.google.code.gson:gson:2.8.6"//自定义依赖方式
     brick project(':dest-library')
     brick project(':common-library')
     brick files('libs/pdf.aar')

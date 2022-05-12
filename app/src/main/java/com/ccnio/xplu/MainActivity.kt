@@ -31,6 +31,8 @@ class MainActivity : AppCompatActivity() {
         R.string.indirect
         Indirect()
 
+   /*     # implementation 对资源隔离无效
+        implementation 间接依赖的module, 代码无法访问,但资源R.xx.xxx可以访问,想隔离资源必须不依赖或使用自定义的依赖方式（brick）*/
         R.string.common_indirect
 
     }

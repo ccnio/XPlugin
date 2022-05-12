@@ -22,7 +22,7 @@ class BrickPlugin : Plugin<Project> {
             if (assembleTask.isAssemble) {
                 val con = project.configurations.getByName(DEPENDENCY_NAME)
                 con.allDependencies.forEach {
-                    Logger.i("$it")
+                    Logger.i("brick dependency: $it")
                     project.dependencies.add(IMPLEMENTATION, it)
                 }
             }

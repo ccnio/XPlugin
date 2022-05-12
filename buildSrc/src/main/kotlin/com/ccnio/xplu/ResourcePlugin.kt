@@ -126,9 +126,8 @@ class ResourcePlugin : Plugin<Project> {
                         for (pro in project.rootProject.allprojects) {
                             if (resDest == pro.name) continue
 
-                            //todo 间接依赖的module,虽然java文件不会被访问,但资源会被访问.下面获取依赖不会获取到间接依赖的module
-                            // 因此存在问题
-                            //brick 的依赖也能找到
+                            //todo 待修改：间接依赖的module,虽然java文件不会被访问,但资源会被访问.下面获取依赖不会获取到间接依赖的module
+                            //brick 的依赖也能找到, 但可以对这些依赖的module不处理
                             for (conf in pro.configurations) {
                                 val find = conf.allDependencies.find { it.name.equals(resSrc) }
                                 if (find != null) {
